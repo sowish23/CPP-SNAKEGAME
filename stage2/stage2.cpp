@@ -25,6 +25,8 @@ class Snake{
 			speed=50;
 		}
 		~Snake(){}
+		int getHeight() {return height;}
+		int getWidth() {return width;}
 
   };
 
@@ -61,7 +63,7 @@ int playAgain(){
 //   newWindow(y,x);
 // }
 
-void draw(WINDOW *win, int map[30][60]) {
+void draw(WINDOW *win, int map[30][60], Snake& snake) {
     int ch;
     for (int i = 0; i<30; i++) {
         for(int j = 0; j < 60; j++){
@@ -82,6 +84,7 @@ void draw(WINDOW *win, int map[30][60]) {
             mvwaddch(win, i, j, ch);
         }
     }
+    mvwprintw(win, snake.getWidth(), snake.getHeight(), "###");
 
 }
 
@@ -150,16 +153,17 @@ void game(){
 									 {3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3}};
 	WINDOW *win1;
 	WINDOW *win2;
+  Snake snake(15,30);
 	initscr();
 	start_color();
-	init_pair(1, COLOR_BLACK, COLOR_CYAN);
+	init_pair(1, COLOR_WHITE, COLOR_CYAN);
 	init_pair(2, COLOR_WHITE, COLOR_GREEN);
 	refresh();
 
-	win1 = newwin(30, 60, 0, 0);
+	win1 = newwin(40, 70, 0, 0);
 	wbkgd(win1, COLOR_PAIR(1));
 	wattron(win1, COLOR_PAIR(1));
-	draw(win1, map1);
+	draw(win1, map1, snake);
 	wrefresh(win1);
 	getch();
 	delwin(win1);
@@ -167,7 +171,7 @@ void game(){
 	win2 = newwin(30, 60, 0, 0);
 	wbkgd(win2, COLOR_PAIR(2));
 	wattron(win2, COLOR_PAIR(2));
-	draw(win2, map2);
+	draw(win2, map2, snake);
 	wrefresh(win2);
 	getch();
 	delwin(win2);
@@ -178,7 +182,6 @@ void game(){
 int main(){
   if (startGame() == 'y'){
     do{
-      Snake snake(x-2,y-5);
       game();
     }while(playAgain()=='y');
   }
