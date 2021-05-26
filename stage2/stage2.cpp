@@ -49,7 +49,7 @@ int startGame(){
     printw("Do you want to start snake game? (y/n)");
 
     return UserInput();
-}
+};
 int playAgain(){
     newWindow(y,x);
     printw("Do you want to play again? (y/n)");
