@@ -14,6 +14,7 @@ private:
 	bool end;
 	int speed;
 	char* map_list;
+	int level;
 public:
 	Snake(int r, int c);
 	~Snake();
@@ -22,9 +23,11 @@ public:
 	void moveSnakeHead();
 	void moveSnakeBody();
 	char* setMaptoList(int map[40][60]);
+	char* changeMap();
 	char getDirection();
 	void setEnd(bool e);
 	bool getEnd();
+	int getLevel();
 	int getSpeed();
 	int getRow();
 	int getCol();
