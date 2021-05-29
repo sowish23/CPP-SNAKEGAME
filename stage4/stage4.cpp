@@ -1,4 +1,4 @@
-#include "snake.cpp"
+#include "snake.h"
 #include <iostream>
 #include <string>
 #include <cstring>
@@ -75,6 +75,7 @@ void drawGameMap(WINDOW* win, Snake& snake, char* table, int row, int col)
 }
 
 void game() {
+
 	int map1[40][60] = {{4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4},
                     {4,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,4},
                     {4,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,4},
@@ -131,7 +132,7 @@ void game() {
 	Snake snake(40, 60);
 	wbkgd(win1, COLOR_PAIR(1));
 	wattron(win1, COLOR_PAIR(1));
-	
+
 	nodelay(win1, TRUE);
 	keypad(win1, TRUE);
 	refresh();
@@ -140,7 +141,7 @@ void game() {
 	{
 		char *map_table = snake.setMaptoList(map1);
 		drawGameMap(win1, snake, map_table, snake.getRow(), snake.getCol());
-		
+
 		int input = wgetch(win1);
 		char d = snake.getDirection();
 		switch(input)
