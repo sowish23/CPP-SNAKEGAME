@@ -22,11 +22,38 @@ void Snake::setDirection(int d){
 		case 3 : direction = Vector(-1, 0); break;
 	}
 }
+int Snake::gateDirection(Vector gate, int map[40][60]){
+	Vector A = gate + Vector(0,-1) ;
+	if(map[A.getY()][A.getX()]==0) return 0;
+	Vector B = gate + Vector(1,0) ;
+	if(map[B.getY()][B.getX()]==0) return 1;
+	Vector C = gate + Vector(0,1) ;
+	if(map[C.getY()][C.getX()]==0) return 2;
+	Vector D = gate + Vector(-1,0) ;
+	if(map[D.getY()][D.getX()]==0) return 3;
 
-void Snake::moveSnakeHead(){
+	return -1;
+}
+
+void Snake::moveSnakeHead(int map[40][60]){
 	snake_vec[0] += direction;
 	for(int i=0; i<wall.size(); i++) {
-		if(snake_vec[0].getX() == wall[i].getX() && snake_vec[0].getY() == wall[i].getY()) setEnd(true);
+		if(snake_vec[0] == wall[i]) {
+			if(snake_vec[0] == gate[1]) {
+				snake_vec[0].setX(gate[0].getX());
+				snake_vec[0].setY(gate[0].getY());
+				setDirection(gateDirection(gate[0], map));
+				removeGate(map);
+				setGate(map);
+			}
+			else if(snake_vec[0] == gate[0]) {
+				snake_vec[0].setX(gate[1].getX());
+				snake_vec[0].setY(gate[1].getY());
+				setDirection(gateDirection(gate[1], map));
+				removeGate(map);
+				setGate(map);
+			}
+		}
 	}
 }
 
@@ -46,6 +73,8 @@ char* Snake::setMaptoList(int map[40][60]){
 				case 2 : map_list[i*col+j] = '2'; break;
 				case 3 : map_list[i*col+j] = '3'; break;
 				case 4 : map_list[i*col+j] = '4'; break;
+				case 98 : map_list[i*col+j] = '8'; break;
+				case 99 : map_list[i*col+j] = '9'; break;
 			}
 		}
 
@@ -68,3 +97,22 @@ bool Snake::getEnd() {return end;}
 int Snake::getSpeed() {return speed;}
 int Snake::getRow() {return row;}
 int Snake::getCol() {return col;}
+
+void Snake::setGate(int map[40][60]) {
+	int randWall = rand() % wall.size();
+	int randWall2 = rand() % wall.size();
+	if(randWall == randWall2) setGate(map);
+	gate[0] = wall[randWall];
+	gate[1] = wall[randWall2];
+	map[gate[0].getY()][gate[0].getX()] = 98;
+	map[gate[1].getY()][gate[1].getX()] = 99;
+
+	// wall.erase(wall.begin() + randWall);
+	// wall.erase(wall.begin() + randWall2);
+}
+ 
+void Snake::removeGate(int map[40][60]) {
+	map[gate[0].getY()][gate[0].getX()] = 1;
+	map[gate[1].getY()][gate[1].getX()] = 1;
+}
+ 
