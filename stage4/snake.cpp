@@ -43,16 +43,15 @@ void Snake::moveSnakeHead(int map[40][60]){
 				snake_vec[0].setX(gate[0].getX());
 				snake_vec[0].setY(gate[0].getY());
 				setDirection(gateDirection(gate[0], map));
-				removeGate(map);
-				setGate(map);
+				break;
 			}
 			else if(snake_vec[0] == gate[0]) {
 				snake_vec[0].setX(gate[1].getX());
 				snake_vec[0].setY(gate[1].getY());
 				setDirection(gateDirection(gate[1], map));
-				removeGate(map);
-				setGate(map);
+				break;
 			}
+			else setEnd(true);
 		}
 	}
 }
