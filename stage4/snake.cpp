@@ -43,12 +43,14 @@ void Snake::moveSnakeHead(int map[40][60]){
 				snake_vec[0].setX(gate[0].getX()); //snake의 head부분을 gate[0]위치로 변경
 				snake_vec[0].setY(gate[0].getY());
 				setDirection(gateDirection(gate[0], map)); //snake의 head 의 방향 바꾸어줌
+				setGateCnt();
 				break;
 			}
 			else if(snake_vec[0] == gate[0]) {
 				snake_vec[0].setX(gate[1].getX());
 				snake_vec[0].setY(gate[1].getY());
 				setDirection(gateDirection(gate[1], map));
+				setGateCnt();
 				break;
 			}
 			else setEnd(true); //gate가 아닌 벽을 만났을 경우는 exit을 true로 변경함
@@ -84,7 +86,7 @@ char* Snake::setMaptoList(int map[40][60]){ //2차원배열을 리스트로 변�
 	return map_list;
 }
 
-char Snake::getDirection(){ //방향 설정
+char Snake::getDirection() { //방향 설정
 	if(direction.getX()==1) return 'r'; //오른쪽
 	else if(direction.getX()==-1) return 'l'; //왼쪽
 	else if(direction.getY()==-1) return 'u'; //윗쪽
@@ -115,3 +117,7 @@ void Snake::removeGate(int map[40][60]) {
 	map[gate[1].getY()][gate[1].getX()] = 1;
 }
  
+void Snake::setGateCnt() {
+	gateCnt += 1;
+}
+int Snake::getGateCnt() {return gateCnt;}
