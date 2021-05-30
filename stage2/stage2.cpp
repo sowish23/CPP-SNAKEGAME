@@ -79,28 +79,37 @@ void drawGameMap(WINDOW* win, Snake& snake, char* table, int row, int col)
 }
 
 void game() {
-
 	float x, y;
+  int *map;
 	initscr();
 	noecho();
 	cbreak();
 
 	start_color();
-	init_pair(1, COLOR_WHITE, COLOR_CYAN);
-	init_pair(2, COLOR_WHITE, COLOR_GREEN);
+  init_pair(1, COLOR_BLACK, COLOR_CYAN);
+  init_pair(2, COLOR_WHITE, COLOR_GREEN);
+  init_pair(3, COLOR_BLACK, COLOR_MAGENTA);
+  init_pair(4, COLOR_BLACK, COLOR_YELLOW);
+  init_pair(5, COLOR_BLACK, COLOR_BLUE);
 
 	getmaxyx(stdscr, y, x);
-	WINDOW *win1 = newwin(40, 60, 0, 0); //row, col, startY, startX
+
 	Snake snake(40, 60);
-	wbkgd(win1, COLOR_PAIR(1));
-	wattron(win1, COLOR_PAIR(1));
+	// wbkgd(win1, COLOR_PAIR(1));
+	// wattron(win1, COLOR_PAIR(1));
+  //
+	// nodelay(win1, TRUE);
+	// keypad(win1, TRUE);
+	// refresh();
+	// wrefresh(win1);
+
 
 	nodelay(win1, TRUE);
 	keypad(win1, TRUE);
 	refresh();
 	wrefresh(win1);
-	
-	for(int i=0; i<5; i++){	
+
+	for(int i=0; i<5; i++){
 		while(!snake.getEnd()){
 			char *map_table = snake.setMaptoList(map[i]);
 			drawGameMap(win1, snake, map_table, snake.getRow(), snake.getCol());
