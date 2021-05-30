@@ -9,12 +9,12 @@ Snake::Snake(int r, int c) : row(r), col(c)
 		end = false;
 		speed = 100000;
 		map_list = new char[row*col];
-		level=1;
+		level=2;
 		snakeLen=3;
 		poisonItem = 0;
 	  growthItem = 0;
 		num_missionB = 1;
-		num_missionGrowth = 1;
+		num_missionGrowth = 0;
 		num_missionPoison = 0;
 		num_missionGate = 1;
 		setGateCnt(0);
