@@ -5,7 +5,18 @@
 #include <cstdlib>
 using namespace std;
 
-const int snakeMaxLen=10;
+const int snakeMaxLen=3;
+//통과해야하는 미션 변수
+// int num_missionB;
+// int num_missionGrowth;
+// int num_missionPoison;
+// int num_missionGate;
+
+// //미션 성공여부 표시해주는 캐릭터
+// static char missionB = ' ';
+// static char missionGrowth = ' ';
+// static char missionPoison = ' ';
+// static char missionGate = ' ';
 
 class Snake
 {
@@ -25,6 +36,17 @@ public:
 	Snake(int r, int c);
 	~Snake();
 	int growthItem, poisonItem;
+	int num_missionB;
+	int num_missionGrowth;
+	int num_missionPoison;
+	int num_missionGate;
+
+	//미션 성공여부 표시해주는 캐릭터
+	char missionB = ' ';
+	char missionGrowth = ' ';
+	char missionPoison = ' ';
+	char missionGate = ' ';
+
 
 	void setDirection(int d);
 	void moveSnakeHead(int map[40][60]);
@@ -39,8 +61,10 @@ public:
 	int getCol();
 	void setGate(int map[40][60]);
 	void removeGate(int map[40][60]);
-	void setGateCnt();
+	void setGateCnt(int n);
 	int getGateCnt();
 	int getLevel();
 	int getSnakeLen();
+	void setMission();
+	void nextLevel();
 };

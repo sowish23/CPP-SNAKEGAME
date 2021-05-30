@@ -10,12 +10,6 @@ using namespace std;
 
 extern int map[5][40][60];
 
-char missionB = ' '; //미션 성공여부 표시해주는 캐릭터
-char missionGrowth = ' ';
-char missionPoison = ' ';
-char missionGate = ' ';
-
-
 void newWindow(float y, float x){ //새창 만들기
     clear();
     initscr();
@@ -88,10 +82,11 @@ void drawGameMap(WINDOW* win, Snake& snake, char* table, int row, int col) //맵
 }
 
 void updateMap(Snake& snake, int map[40][60]) { //일정시간마다 맵 업데이트
+  snake.removeGate(map);
 	snake.setGate(map); //gate를 임의로 설정
 }
 
-void printScoreBoard(WINDOW* w, int snakeLen, int level, int growthItem, int poisonItem, int Gate){
+void printScoreBoard(WINDOW* w, int snakeLen, int level, int growthItem, int poisonItem, int Gate){ //scoreBoard출력
 	werase(w);
 	wbkgd(w, COLOR_PAIR(level));
 	wborder(w, '|','|','~','~','.','.','.','.');
@@ -104,7 +99,7 @@ void printScoreBoard(WINDOW* w, int snakeLen, int level, int growthItem, int poi
 	wrefresh(w);
 }
 
-void printMission(WINDOW* w, int level){
+void printMission(WINDOW* w, int level, int missionB, int missionGrowth, int missionPoison, int missionGate){ //mission출력
   werase(w);
   wbkgd(w, COLOR_PAIR(level));
   wborder(w, '|','|','~','~','.','.','.','.');
@@ -117,7 +112,6 @@ void printMission(WINDOW* w, int level){
 }
 
 void game() { //game 실행
-
 
 	float x, y;
 	initscr();
@@ -151,11 +145,14 @@ void game() { //game 실행
 	// wrefresh(win1);
 	int mapCnt = 0;
 	for(int i=0; i<5; i++){
+    snake.removeGate(map[i]);
+    snake.growthItem=0;
+    snake.poisonItem=0;
 		while(!snake.getEnd()) //exit가 true가 될때까지 반복문
 		{
       WINDOW *win1 = newwin(40, 60, 0, 0); //row, col, startY, startX
       printScoreBoard(scoreBoard, snake.getSnakeLen(), snake.getLevel(),snake.poisonItem, snake.growthItem, snake.getGateCnt());
-      printMission(mission, snake.getLevel());
+      printMission(mission, snake.getLevel(), snake.missionB, snake.missionGrowth, snake.missionPoison, snake.missionGate);
 
 			srand(time(NULL)); //랜덤 씨드값 설정
 			char *map_table = snake.setMaptoList(map[i]);//2차원 배열 맵을 리스트로 변환함
@@ -171,7 +168,6 @@ void game() { //game 실행
 			}
 			mapCnt+= 1;
 			if (mapCnt == 100) { //10초마다 맵 업데이트
-				snake.removeGate(map[i]);
 				updateMap(snake, map[i]);
 				mapCnt = 1;
 			}
@@ -203,6 +199,8 @@ void game() { //game 실행
 			}
 			snake.moveSnakeBody(); //body도 함께 바꾸어줌
 			snake.moveSnakeHead(map[i]); //head의 방향 변경
+      snake.setMission();
+      snake.nextLevel();
 			usleep(snake.getSpeed()); //speed 설정한 만큼 화면 유지 (=스피드)
 		}
 	}
