@@ -6,7 +6,11 @@
 #include <cstdlib>
 #include <ncurses.h>
 #include <unistd.h>	//usleep(microseconds);
+
+// #include <./map.cpp>
 using namespace std;
+
+extern int map[5][40][60];
 
 void newWindow(float y, float x){
     clear();
@@ -98,51 +102,48 @@ void game() {
 	// keypad(win1, TRUE);
 	// refresh();
 	// wrefresh(win1);
-	while(!snake.getEnd())
-	{
-    WINDOW *win1 = newwin(40, 60, 0, 0); //row, col, startY, startX
-    // level =
-    //switch(snake.getLevel())
 
-    char *map = snake.changeMap();
-    wbkgd(win1, COLOR_PAIR(snake.getLevel()));
-    wattron(win1, COLOR_PAIR(snake.getLevel()));
-    nodelay(win1, TRUE);
-    keypad(win1, TRUE);
-    refresh();
-    wrefresh(win1);
-    drawGameMap(win1, snake, map, snake.getRow(), snake.getCol());
 
-    
+	nodelay(win1, TRUE);
+	keypad(win1, TRUE);
+	refresh();
+	wrefresh(win1);
 
-		int input = wgetch(win1);
-		char d = snake.getDirection();
-		switch(input)
-		{
-			case 'w':
-			case KEY_UP:
-				if(d!='u' && d!='d') snake.setDirection(0);
-				else if (d=='d') snake.setEnd(true);
-				break;
-			case 's':
-			case KEY_DOWN:
-				if(d!='d' && d!='u') snake.setDirection(2);
-				else if (d=='u') snake.setEnd(true);
-				break;
-			case 'a':
-			case KEY_LEFT:
-				if(d!='l' && d!='r') snake.setDirection(3);
-				else if (d=='r') snake.setEnd(true);
-				break;
-			case 'd':
-			case KEY_RIGHT:
-				if(d!='r' && d!='l') snake.setDirection(1);
-				else if (d=='l') snake.setEnd(true);
-				break;
+	for(int i=0; i<5; i++){
+		while(!snake.getEnd()){
+			char *map_table = snake.setMaptoList(map[i]);
+			drawGameMap(win1, snake, map_table, snake.getRow(), snake.getCol());
+
+			int input = wgetch(win1);
+			char d = snake.getDirection();
+			switch(input)
+			{
+				case 'w':
+				case KEY_UP:
+					if(d!='u' && d!='d') snake.setDirection(0);
+					else if (d=='d') snake.setEnd(true);
+					break;
+				case 's':
+				case KEY_DOWN:
+					if(d!='d' && d!='u') snake.setDirection(2);
+					else if (d=='u') snake.setEnd(true);
+					break;
+				case 'a':
+				case KEY_LEFT:
+					if(d!='l' && d!='r') snake.setDirection(3);
+					else if (d=='r') snake.setEnd(true);
+					break;
+				case 'd':
+				case KEY_RIGHT:
+					if(d!='r' && d!='l') snake.setDirection(1);
+					else if (d=='l') snake.setEnd(true);
+					break;
+			}
+			snake.moveSnakeBody();
+			snake.moveSnakeHead();
+			usleep(snake.getSpeed());
+
 		}
-		snake.moveSnakeBody();
-		snake.moveSnakeHead();
-		usleep(snake.getSpeed());
 	}
 }
 
