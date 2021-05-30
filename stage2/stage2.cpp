@@ -13,6 +13,9 @@ using namespace std;
 extern int map[5][40][60];
 extern void appearposion(int stage_num);
 extern void appeargrowth(int stage_num);
+extern void disappearPoison(int stage_num);
+extern void disappeargrowth(int stage_num);
+
 
 char* updateitem(Snake snake, int stage_num,char *map_table);
 
@@ -125,6 +128,8 @@ void game() {
 			
 			temp ++;
 			if(temp >30){
+				disappeargrowth(i);
+				disappearPoison(i);
 				temp = 0;
 				appeargrowth(i);
 				appearposion(i);

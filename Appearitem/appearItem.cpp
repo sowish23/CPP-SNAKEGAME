@@ -118,3 +118,18 @@ void appeargrowth(int stage_num){
 
 }
 
+void disappearPoison(int stage_num){
+    if(vpoison_item.empty() == 0 ){
+        position poison_position = vpoison_item.back();
+        map[stage_num][poison_position.y][poison_position.x] = 0;
+        vpoison_item.pop_back();
+    }
+}
+
+void disappeargrowth(int stage_num){
+    if(vgrow_item.empty() == 0 ){
+        position growth_position = vgrow_item.back();
+        map[stage_num][growth_position.y][growth_position.x] = 0;
+        vgrow_item.pop_back();
+    }
+}
