@@ -41,6 +41,7 @@ char* Snake::setMaptoList(int map[40][60]){
 	for(unsigned int i=0; i<40; i++) {
 		for(int j=0; j<60; j++){
 			switch(map[i][j]) {
+				case 0 : map_list[i*col+j] = '0'; break;
 				case 1 :
 					map_list[i*col+j] = '1';
 					wall.push_back(Vector(j,i));
@@ -48,6 +49,7 @@ char* Snake::setMaptoList(int map[40][60]){
 				case 2 : map_list[i*col+j] = '2'; break;
 				case 3 : map_list[i*col+j] = '3'; break;
 				case 4 : map_list[i*col+j] = '4'; break;
+				case 6 : map_list[i*col+j] = '6'; break;
 			}
 		}
 

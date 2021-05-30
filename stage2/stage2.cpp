@@ -11,6 +11,14 @@
 using namespace std;
 
 extern int map[5][40][60];
+extern void appearposion(int stage_num);
+extern void appeargrowth(int stage_num);
+extern void disappearPoison(int stage_num);
+extern void disappeargrowth(int stage_num);
+
+
+char* updateitem(Snake snake, int stage_num,char *map_table);
+
 
 void newWindow(float y, float x){
     clear();
@@ -49,7 +57,7 @@ void drawGameMap(WINDOW* win, Snake& snake, char* table, int row, int col)
 		{
 			int y = i / col;
 			int x = i - (y*col);
-			int ch;
+			char ch;
 			int d;
 			switch(table[i])
 			{
@@ -71,6 +79,12 @@ void drawGameMap(WINDOW* win, Snake& snake, char* table, int row, int col)
 				case 'b':
 					ch = '#';
 					break;
+				case '3':
+                    ch = '0';
+                    break;
+                case '6':
+                    ch = 'x';
+                    break;
 			}
 			mvwaddch(win, y, x, ch);
 		}
@@ -86,22 +100,18 @@ void game() {
 	cbreak();
 
 	start_color();
-  init_pair(1, COLOR_BLACK, COLOR_CYAN);
-  init_pair(2, COLOR_WHITE, COLOR_GREEN);
-  init_pair(3, COLOR_BLACK, COLOR_MAGENTA);
-  init_pair(4, COLOR_BLACK, COLOR_YELLOW);
-  init_pair(5, COLOR_BLACK, COLOR_BLUE);
+
+    init_pair(1, COLOR_BLACK, COLOR_CYAN);
+    init_pair(2, COLOR_WHITE, COLOR_GREEN);
+    init_pair(3, COLOR_BLACK, COLOR_MAGENTA);
+    init_pair(4, COLOR_BLACK, COLOR_YELLOW);
+    init_pair(5, COLOR_BLACK, COLOR_BLUE);
 
 	getmaxyx(stdscr, y, x);
-
+	WINDOW *win1 = newwin(40, 60, 0, 0); //row, col, startY, startX
 	Snake snake(40, 60);
-	// wbkgd(win1, COLOR_PAIR(1));
-	// wattron(win1, COLOR_PAIR(1));
-  //
-	// nodelay(win1, TRUE);
-	// keypad(win1, TRUE);
-	// refresh();
-	// wrefresh(win1);
+	wbkgd(win1, COLOR_PAIR(4));
+	wattron(win1, COLOR_PAIR(4));
 
 
 	nodelay(win1, TRUE);
@@ -109,10 +119,25 @@ void game() {
 	refresh();
 	wrefresh(win1);
 
-	for(int i=0; i<5; i++){
+	
+	for(int i=0; i<5; i++){	
+		int temp = 0;
+		bool itemTemp = 0;
+		// char *map_table;
+
 		while(!snake.getEnd()){
 			char *map_table = snake.setMaptoList(map[i]);
 			drawGameMap(win1, snake, map_table, snake.getRow(), snake.getCol());
+			
+			temp ++;
+			if(temp >30){
+				disappeargrowth(i);
+				disappearPoison(i);
+				temp = 0;
+				appeargrowth(i);
+				appearposion(i);
+			}	
+
 
 			int input = wgetch(win1);
 			char d = snake.getDirection();
@@ -144,8 +169,12 @@ void game() {
 			usleep(snake.getSpeed());
 
 		}
+
+
+
 	}
 }
+
 
 int main(){
 	if (startGame(0, 0) == 'y') {
