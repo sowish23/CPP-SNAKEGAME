@@ -133,6 +133,7 @@ void game() {
 			snake.moveSnakeBody();
 			snake.moveSnakeHead();
 			usleep(snake.getSpeed());
+
 		}
 	}
 }
