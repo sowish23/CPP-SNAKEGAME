@@ -93,14 +93,13 @@ void drawGameMap(WINDOW* win, Snake& snake, char* table, int row, int col)
 }
 
 void game() {
+
 	float x, y;
-  int *map;
 	initscr();
 	noecho();
 	cbreak();
 
 	start_color();
-
     init_pair(1, COLOR_BLACK, COLOR_CYAN);
     init_pair(2, COLOR_WHITE, COLOR_GREEN);
     init_pair(3, COLOR_BLACK, COLOR_MAGENTA);
@@ -113,12 +112,10 @@ void game() {
 	wbkgd(win1, COLOR_PAIR(4));
 	wattron(win1, COLOR_PAIR(4));
 
-
 	nodelay(win1, TRUE);
 	keypad(win1, TRUE);
 	refresh();
 	wrefresh(win1);
-
 	
 	for(int i=0; i<5; i++){	
 		int temp = 0;
