@@ -16,6 +16,7 @@ private:
 	bool end;
 	int speed;
 	char* map_list;
+	int gateCnt;
 public:
 	Snake(int r, int c);
 	~Snake();
@@ -33,4 +34,6 @@ public:
 	int getCol();
 	void setGate(int map[40][60]);
 	void removeGate(int map[40][60]);
+	void setGateCnt();
+	int getGateCnt();
 };
