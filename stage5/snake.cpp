@@ -9,6 +9,10 @@ Snake::Snake(int r, int c) : row(r), col(c)
 		end = false;
 		speed = 100000;
 		map_list = new char[row*col];
+		level=1;
+		snakeLen=3;
+		poisonItem = 0;
+	  growthItem = 0;
 	}
 
 Snake::~Snake(){ delete [] map_list; }
@@ -68,7 +72,7 @@ char* Snake::setMaptoList(int map[40][60]){ //2차원배열을 리스트로 변�
 		for(int j=0; j<60; j++){
 			switch(map[i][j]) { //int를 캐릭터 값으로 변경 + 1차원 배열로 변경
 				case 1 : //게이트가 생길 수 있는 벽일 경우
-					map_list[i*col+j] = '1'; 
+					map_list[i*col+j] = '1';
 					wall.push_back(Vector(j,i)); //wall벡터에 값 추가
 					break;
 				case 2 : map_list[i*col+j] = '2'; break;
@@ -98,10 +102,12 @@ bool Snake::getEnd() {return end;}
 int Snake::getSpeed() {return speed;}
 int Snake::getRow() {return row;}
 int Snake::getCol() {return col;}
+int Snake::getLevel() {return level;}
+int Snake::getSnakeLen(){return snakeLen;}
 
 void Snake::setGate(int map[40][60]) { //gate설정
 	int randWall = rand() % wall.size(); //랜덤함수 추출
-	int randWall2 = rand() % wall.size(); 
+	int randWall2 = rand() % wall.size();
 	if(randWall == randWall2) setGate(map); //추출한 두 랜덤 값이 같으면 다시 호출
 	gate[0] = wall[randWall]; //벡터에 대입
 	gate[1] = wall[randWall2];
@@ -111,12 +117,12 @@ void Snake::setGate(int map[40][60]) { //gate설정
 	// wall.erase(wall.begin() + randWall);
 	// wall.erase(wall.begin() + randWall2);
 }
- 
+
 void Snake::removeGate(int map[40][60]) {
 	map[gate[0].getY()][gate[0].getX()] = 1; //전 gate의 map 다시 바꾸어줌
 	map[gate[1].getY()][gate[1].getX()] = 1;
 }
- 
+
 void Snake::setGateCnt() {
 	gateCnt += 1;
 }

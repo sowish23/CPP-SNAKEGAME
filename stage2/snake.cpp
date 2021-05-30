@@ -1,4 +1,5 @@
 #include "snake.h"
+#include "map2.cpp"
 using namespace std;
 
 Snake::Snake(int r, int c) : row(r), col(c)
@@ -9,6 +10,7 @@ Snake::Snake(int r, int c) : row(r), col(c)
 		end = false;
 		speed = 100000;
 		map_list = new char[row*col];
+		level=1;
 	}
 
 Snake::~Snake(){ delete [] map_list; }
@@ -58,6 +60,14 @@ char* Snake::setMaptoList(int map[40][60]){
 	return map_list;
 }
 
+char* Snake::changeMap(){ // 맵바꾸기
+    if (level == 1){return setMaptoList(map1);}
+    else if (level == 2){return setMaptoList(map2);}
+		else if (level == 3){return setMaptoList(map3);}
+    else if (level == 4){return setMaptoList(map4);}
+		else if (level == 5){return setMaptoList(map5);}
+}
+
 char Snake::getDirection(){
 	if(direction.getX()==1) return 'r';
 	else if(direction.getX()==-1) return 'l';
@@ -68,5 +78,6 @@ char Snake::getDirection(){
 void Snake::setEnd(bool e) {end = e;}
 bool Snake::getEnd() {return end;}
 int Snake::getSpeed() {return speed;}
+int Snake::getLevel() {return level;}
 int Snake::getRow() {return row;}
 int Snake::getCol() {return col;}
