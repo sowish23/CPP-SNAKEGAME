@@ -2,6 +2,7 @@
 #include <vector>
 #include "vector.h"
 #include <string.h>
+#include <cstdlib>
 using namespace std;
 
 class Snake
