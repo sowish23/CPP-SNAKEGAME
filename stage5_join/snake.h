@@ -6,7 +6,7 @@
 #include "position.h"
 using namespace std;
 
-const int snakeMaxLen=10;
+const int snakeMaxLen=6;
 
 class Snake
 {
@@ -25,7 +25,8 @@ private:
 public:
 	Snake(int r, int c);
 	~Snake();
-	int growthItem, poisonItem;
+	int growthItem=0;
+	int poisonItem=0;
 
 	void setDirection(int d);
 	void moveSnakeHead(int map[40][60]);
@@ -52,4 +53,5 @@ public:
 	void crushItem();
 	position getHead();
 	void resize(int new_size);
+	void changeSnakeLen();
 };

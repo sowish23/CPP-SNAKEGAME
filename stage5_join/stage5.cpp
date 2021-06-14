@@ -20,10 +20,10 @@ extern position getHead();
 extern vector<position> vpoison_item;
 extern vector<position> vgrow_item;
 
-char missionB = ' '; //미션 성공여부 표시해주는 캐릭터
-char missionGrowth = ' ';
-char missionPoison = ' ';
-char missionGate = ' ';
+char missionB = 'X'; //미션 성공여부 표시해주는 캐릭터
+char missionGrowth = 'X';
+char missionPoison = 'X';
+char missionGate = 'X';
 
 
 void newWindow(float y, float x){ //새창 만들기
@@ -112,8 +112,8 @@ void printScoreBoard(WINDOW* w, int snakeLen, int level, int growthItem, int poi
 	wborder(w, '|','|','~','~','.','.','.','.');
 	mvwprintw(w, 1, 1, "Score Board");
   mvwprintw(w, 2, 1, "B:(CurrentLength)/(Max  Length) %d/%d", snakeLen, snakeMaxLen);
-  mvwprintw(w, 3, 1, "+:(GrowthItems Num) ", growthItem);
-  mvwprintw(w, 4, 1, "-:(PoisonItems Num) ", poisonItem);
+  mvwprintw(w, 3, 1, "+:(GrowthItems Num): %d ", growthItem);
+  mvwprintw(w, 4, 1, "-:(PoisonItems Num): %d ", poisonItem);
   mvwprintw(w, 5, 1, "G(Number of Entered Gate) : %d ", Gate);
   mvwprintw(w, 6, 1, "Level : %d ", level);
 	wrefresh(w);
@@ -124,10 +124,10 @@ void printMission(WINDOW* w, int level){
   wbkgd(w, COLOR_PAIR(level));
   wborder(w, '|','|','~','~','.','.','.','.');
   mvwprintw(w, 1, 1, "Mission");
-  mvwprintw(w, 2, 1, "B: 10 ( %c )", missionB);
-  mvwprintw(w, 3, 1, "+:5  ( %c )", missionGrowth);
-  mvwprintw(w, 4, 1, "-:2  ( %c )", missionPoison);
-  mvwprintw(w, 5, 1, "G:1  ( %c )" ,missionGate);
+  mvwprintw(w, 2, 1, "B: 6 ( %c )", missionB);
+  mvwprintw(w, 3, 1, "+: 2  ( %c )", missionGrowth);
+  mvwprintw(w, 4, 1, "-: 2  ( %c )", missionPoison);
+  mvwprintw(w, 5, 1, "G: 1  ( %c )" ,missionGate);
   wrefresh(w);
 }
 
@@ -142,9 +142,9 @@ void game() { //game 실행
 	start_color();
 	init_pair(1, COLOR_WHITE, COLOR_CYAN);
 	init_pair(2, COLOR_WHITE, COLOR_GREEN);
-  init_pair(3, COLOR_BLACK, COLOR_MAGENTA);
-  init_pair(4, COLOR_BLACK, COLOR_YELLOW);
-  init_pair(5, COLOR_BLACK, COLOR_BLUE);
+	init_pair(3, COLOR_BLACK, COLOR_MAGENTA);
+	init_pair(4, COLOR_BLACK, COLOR_YELLOW);
+	init_pair(5, COLOR_BLACK, COLOR_BLUE);
 
 	getmaxyx(stdscr, y, x);
 	WINDOW *win1 = newwin(40, 60, 0, 0); //row, col, startY, startX
@@ -185,16 +185,22 @@ void game() { //game 실행
 			position head = snake.getHead();
 			if(head == vgrow_item.back()){
 				snake.crushItem();
+				snake.changeSnakeLen();
+				snake.growthItem++;
 			}
 		}
 		if(vpoison_item.empty() ==0){
 			position head = snake.getHead();
 			if(head == vpoison_item.back()){
 				snake.minusSnake();
+				snake.changeSnakeLen();
+				snake.poisonItem++;
 			}
 		}
+		if(snake.growthItem == 2) {missionGrowth = 'O';}
+		if(snake.poisonItem == 2) {missionPoison = 'O';}
+		if(snake.getSize() == 6) {missionB ='O';}
 		if (mapCnt == 0) {
-			
 			(snake, map[snake.getLevel()-1]); //처음 맵 설정
 		}
 		mapCnt+= 1;
@@ -232,12 +238,19 @@ void game() { //game 실행
 				if(d!='r' && d!='l') snake.setDirection(1);
 				else if (d=='l') snake.setEnd(true);
 				break;
+			case 'r' :
+			case 'R' :
+				snake.setEnd(true);
+				snake.removeGate(map[snake.getLevel()]);
+				game();
 		}
 		if(snake.getSize() <3) snake.setEnd(TRUE);
 
-		if(snake.getSize() >6){
+		if((missionB == 'O')&&(missionGate=='O')&&(missionGrowth=='O')&&(missionPoison=='O')){
 			snake.setLevel(snake.getLevel()+1);
 			snake.resize(3);
+			snake.growthItem =0;
+			snake.poisonItem =0;
 		}
 		
 		snake.moveSnakeBody(); //body도 함께 바꾸어줌

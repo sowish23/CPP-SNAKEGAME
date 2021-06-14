@@ -124,10 +124,16 @@ void Snake::setGate(int map[40][60]) { //gate설정
 	// wall.erase(wall.begin() + randWall2);
 }
 
-void Snake::removeGate(int map[40][60]) {
+void Snake::removeGate(int map[40][60])
+{
 	map[gate[0].getY()][gate[0].getX()] = 1; //전 gate의 map 다시 바꾸어줌
 	map[gate[1].getY()][gate[1].getX()] = 1;
+	gate[0].setX(0);
+	gate[0].setY(0);
+	gate[1].setX(0);
+	gate[1].setY(0);
 }
+
 
 void Snake::setGateCnt() {
 	gateCnt += 1;
@@ -162,4 +168,5 @@ position Snake::getHead(){
 void Snake::resize(int new_size){
 	snake_vec.resize(new_size);
 }
+void Snake::changeSnakeLen(){snakeLen = snake_vec.size();}
 
