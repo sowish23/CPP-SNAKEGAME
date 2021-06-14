@@ -218,6 +218,12 @@ void game()
 				else if (d == 'l')
 					snake.setEnd(true);
 				break;
+			case 'r' :
+			case 'R' :
+				i = 0;
+				snake.setEnd(true);
+				snake.removeGate(map[i]);
+				game();
 			}
 			snake.moveSnakeBody();		 //body도 함께 바꾸어줌
 			snake.moveSnakeHead(map[i]); //head의 방향 변경
