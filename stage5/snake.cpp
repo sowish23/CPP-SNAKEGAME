@@ -9,10 +9,15 @@ Snake::Snake(int r, int c) : row(r), col(c)
 		end = false;
 		speed = 100000;
 		map_list = new char[row*col];
-		level=1;
+		level=2;
 		snakeLen=3;
 		poisonItem = 0;
 	  growthItem = 0;
+		num_missionB = 1;
+		num_missionGrowth = 0;
+		num_missionPoison = 0;
+		num_missionGate = 1;
+		setGateCnt(0);
 	}
 
 Snake::~Snake(){ delete [] map_list; }
@@ -47,14 +52,14 @@ void Snake::moveSnakeHead(int map[40][60]){
 				snake_vec[0].setX(gate[0].getX()); //snake의 head부분을 gate[0]위치로 변경
 				snake_vec[0].setY(gate[0].getY());
 				setDirection(gateDirection(gate[0], map)); //snake의 head 의 방향 바꾸어줌
-				setGateCnt();
+				setGateCnt(1);
 				break;
 			}
 			else if(snake_vec[0] == gate[0]) {
 				snake_vec[0].setX(gate[1].getX());
 				snake_vec[0].setY(gate[1].getY());
 				setDirection(gateDirection(gate[1], map));
-				setGateCnt();
+				setGateCnt(1);
 				break;
 			}
 			else setEnd(true); //gate가 아닌 벽을 만났을 경우는 exit을 true로 변경함
@@ -123,7 +128,33 @@ void Snake::removeGate(int map[40][60]) {
 	map[gate[1].getY()][gate[1].getX()] = 1;
 }
 
-void Snake::setGateCnt() {
-	gateCnt += 1;
+void Snake::setGateCnt(int n) {
+	if (n == 0) gateCnt = 0;
+	else gateCnt += 1;
 }
 int Snake::getGateCnt() {return gateCnt;}
+
+void Snake::setMission(){
+	if ((snakeLen/snakeMaxLen)>=num_missionB){
+		missionB='v';
+	}
+	if (growthItem>=num_missionGrowth){
+		missionGrowth='v';
+	}
+	if (poisonItem>=num_missionPoison){
+		missionPoison='v';
+	}
+	if (gateCnt>=num_missionGate){
+		missionGate='v';
+	}
+}
+
+void Snake::nextLevel(){
+	if (missionB =='v' && missionGrowth=='v' && missionPoison=='v' && missionGate=='v'){
+		level++;
+		snakeLen = 3;
+		growthItem=0;
+		poisonItem=0;
+		gateCnt=0;
+	}
+}

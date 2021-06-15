@@ -42,7 +42,7 @@ public:
 	//gate
 	void setGate(int map[40][60]);
 	void removeGate(int map[40][60]);
-	void setGateCnt();
+	void setGateCnt(int i);
 	int getGateCnt();
 	int getLevel();
 	int getSnakeLen();
