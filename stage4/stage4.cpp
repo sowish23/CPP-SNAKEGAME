@@ -86,8 +86,6 @@ void updateMap(Snake& snake, int map[40][60]) { //일정시간마다 맵 업데�
 }
 
 void game() { //game 실행
-
-
 	float x, y;
 	initscr();
 	noecho();
@@ -148,6 +146,12 @@ void game() { //game 실행
 					if(d!='r' && d!='l') snake.setDirection(1);
 					else if (d=='l') snake.setEnd(true);
 					break;
+				case 'r' :
+				case 'R' :
+					i = 0;
+					snake.setEnd(true);
+					snake.removeGate(map[i]);
+					game();
 			}
 			snake.moveSnakeBody(); //body도 함께 바꾸어줌
 			snake.moveSnakeHead(map[i]); //head의 방향 변경
