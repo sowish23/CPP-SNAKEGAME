@@ -25,6 +25,11 @@ char missionGrowth = 'X';
 char missionPoison = 'X';
 char missionGate = 'X';
 
+int num_missionB = 6; // 미션 기준
+int num_missionGrowth = 2;
+int num_missionPoison = 2;
+int num_missionGate = 1;
+
 
 void newWindow(float y, float x){ //새창 만들기
     clear();
@@ -131,8 +136,40 @@ void printMission(WINDOW* w, int level){
   wrefresh(w);
 }
 
-void game() { //game 실행
+void setMission(Snake& snake){
+  if(vgrow_item.empty() ==0){
+    position head = snake.getHead();
+    if(head == vgrow_item.back()){
+      snake.crushItem();
+      snake.changeSnakeLen();
+      snake.growthItem++;
+    }
+  }
+  if(vpoison_item.empty() ==0){
+    position head = snake.getHead();
+    if(head == vpoison_item.back()){
+      snake.minusSnake();
+      snake.changeSnakeLen();
+      snake.poisonItem++;
+    }
+  }
+  if(snake.getSize() == num_missionB) {missionB ='O';}
+  if(snake.growthItem == num_missionGrowth) {missionGrowth = 'O';}
+  if(snake.poisonItem == num_missionPoison) {missionPoison = 'O';}
+  if(snake.getGateCnt() == num_missionGate) {missionGate = 'O';}
+}
 
+void nextLevel(Snake& snake){
+  if((missionB == 'O')&&(missionGate=='O')&&(missionGrowth=='O')&&(missionPoison=='O')){
+    snake.resize(3);
+    snake.growthItem =0;
+    snake.poisonItem =0;
+    snake.setGateCnt(0);
+    snake.setLevel(snake.getLevel()+1);
+  }
+}
+
+void game() { //game 실행
 
 	float x, y;
 	initscr();
@@ -168,7 +205,7 @@ void game() { //game 실행
 	while(!snake.getEnd()) //exit가 true가 될때까지 반복문
 	{
 	WINDOW *win1 = newwin(40, 60, 0, 0); //row, col, startY, startX
-	printScoreBoard(scoreBoard, snake.getSnakeLen(), snake.getLevel(),snake.poisonItem, snake.growthItem, snake.getGateCnt());
+	printScoreBoard(scoreBoard, snake.getSnakeLen(), snake.getLevel(), snake.growthItem, snake.poisonItem, snake.getGateCnt());
 	printMission(mission, snake.getLevel());
 
 	srand(time(NULL)); //랜덤 씨드값 설정
@@ -178,28 +215,10 @@ void game() { //game 실행
 	nodelay(win1, TRUE);
 	keypad(win1, TRUE);
 	refresh();
-	
+
 	wrefresh(win1);
 		drawGameMap(win1, snake, map_table, snake.getRow(), snake.getCol()); //draw함수 호출하여 맵 업데이트
-		if(vgrow_item.empty() ==0){
-			position head = snake.getHead();
-			if(head == vgrow_item.back()){
-				snake.crushItem();
-				snake.changeSnakeLen();
-				snake.growthItem++;
-			}
-		}
-		if(vpoison_item.empty() ==0){
-			position head = snake.getHead();
-			if(head == vpoison_item.back()){
-				snake.minusSnake();
-				snake.changeSnakeLen();
-				snake.poisonItem++;
-			}
-		}
-		if(snake.growthItem == 2) {missionGrowth = 'O';}
-		if(snake.poisonItem == 2) {missionPoison = 'O';}
-		if(snake.getSize() == 6) {missionB ='O';}
+    setMission(snake);
 		if (mapCnt == 0) {
 			(snake, map[snake.getLevel()-1]); //처음 맵 설정
 		}
@@ -244,17 +263,11 @@ void game() { //game 실행
 				snake.removeGate(map[snake.getLevel()]);
 				game();
 		}
-		if(snake.getSize() <3) snake.setEnd(TRUE);
+		if(snake.getSize() <3) snake.setEnd(TRUE); //snake 길이 3보다 작으면 끝
 
-		if((missionB == 'O')&&(missionGate=='O')&&(missionGrowth=='O')&&(missionPoison=='O')){
-			snake.setLevel(snake.getLevel()+1);
-			snake.resize(3);
-			snake.growthItem =0;
-			snake.poisonItem =0;
-		}
-		
 		snake.moveSnakeBody(); //body도 함께 바꾸어줌
 		snake.moveSnakeHead(map[snake.getLevel()-1]); //head의 방향 변경
+    nextLevel(snake); // 레벨 올리기
 		usleep(snake.getSpeed()); //speed 설정한 만큼 화면 유지 (=스피드)
 	}
 }

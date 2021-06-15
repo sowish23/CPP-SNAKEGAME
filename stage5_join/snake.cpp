@@ -51,14 +51,14 @@ void Snake::moveSnakeHead(int map[40][60]){
 				snake_vec[0].setX(gate[0].getX()); //snake의 head부분을 gate[0]위치로 변경
 				snake_vec[0].setY(gate[0].getY());
 				setDirection(gateDirection(gate[0], map)); //snake의 head 의 방향 바꾸어줌
-				setGateCnt();
+				setGateCnt(1);
 				break;
 			}
 			else if(snake_vec[0] == gate[0]) {
 				snake_vec[0].setX(gate[1].getX());
 				snake_vec[0].setY(gate[1].getY());
 				setDirection(gateDirection(gate[1], map));
-				setGateCnt();
+				setGateCnt(1);
 				break;
 			}
 			else setEnd(true); //gate가 아닌 벽을 만났을 경우는 exit을 true로 변경함
@@ -135,8 +135,13 @@ void Snake::removeGate(int map[40][60])
 }
 
 
-void Snake::setGateCnt() {
-	gateCnt += 1;
+void Snake::setGateCnt(int i) {
+	if (i==0){
+		gateCnt = 0;
+	}
+	else{
+		gateCnt += 1;
+	}
 }
 int Snake::getGateCnt() {return gateCnt;}
 
@@ -169,4 +174,3 @@ void Snake::resize(int new_size){
 	snake_vec.resize(new_size);
 }
 void Snake::changeSnakeLen(){snakeLen = snake_vec.size();}
-
