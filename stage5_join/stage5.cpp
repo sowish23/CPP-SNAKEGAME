@@ -165,6 +165,10 @@ void nextLevel(Snake& snake){
     snake.growthItem =0;
     snake.poisonItem =0;
     snake.setGateCnt(0);
+    missionB = 'X'; //미션 성공여부 표시해주는 캐릭터
+    missionGrowth = 'X';
+    missionPoison = 'X';
+    missionGate = 'X';
     snake.setLevel(snake.getLevel()+1);
   }
 }
