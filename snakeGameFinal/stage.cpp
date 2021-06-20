@@ -168,7 +168,8 @@ int noticeChangeLevel(float y, float x, int level){ // 레벨 바뀔때 알려�
   return UserInput();
 }
 
-//@author 송경민 (20181630)
+//@author 송경민 (20181630) 70%
+//@author 최지희 (20181701) 30%
 void setMission(Snake& snake, WINDOW *win1){
   if(vgrow_item.empty() ==0){
     position head = snake.getHead();
