@@ -2,10 +2,12 @@
 using namespace std;
 
 extern int map[5][40][60];
-extern void appearposion(int stage_num);
-extern void appeargrowth(int stage_num);
-extern void disappearPoison(int stage_num);
-extern void disappeargrowth(int stage_num);
+extern void appearposion(int stage_num, WINDOW *win1);
+extern void appeargrowth(int stage_num, WINDOW *win1);
+extern void disappearPoison(int stage_num, WINDOW *win1);
+extern void disappeargrowth(int stage_num, WINDOW *win1);
+extern WINDOW *win1;
+
 
 Snake::Snake(int r, int c) : row(r), col(c)
 	{
@@ -152,17 +154,16 @@ void Snake::setLevel(int new_level){
 	level = new_level;
 }
 
-vector<Vector> Snake::minusSnake(){
-	disappearPoison(level-1);
+void Snake::minusSnake(WINDOW *win1){
+	disappearPoison(level-1,win1);
 	snake_vec.pop_back();
-	appearposion(level-1);
-	return snake_vec;
+	appearposion(level-1,win1);
 }
 
-void Snake::crushItem(){
-	disappeargrowth(level -1);
+void Snake::crushItem(WINDOW *win1){
+	disappeargrowth(level -1,win1);
 	snake_vec.push_back(snake_vec.back());
-	appeargrowth(level-1);
+	appeargrowth(level-1,win1);
 }
 
 position Snake::getHead(){

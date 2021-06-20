@@ -10,12 +10,12 @@ using namespace std;
 
 extern int map[5][40][60];
 extern int map[5][40][60];
-extern void appearposion(int stage_num);
-extern void appeargrowth(int stage_num);
-extern void disappearPoison(int stage_num);
-extern void disappeargrowth(int stage_num);
-extern void crushItem();
-extern vector<Vector> minusSnake();
+extern void appearposion(int stage_num, WINDOW *win1);
+extern void appeargrowth(int stage_num, WINDOW *win1);
+extern void disappearPoison(int stage_num, WINDOW *win1);
+extern void disappeargrowth(int stage_num, WINDOW *win1);
+extern void crushItem(WINDOW *win1);
+extern vector<Vector> minusSnake(WINDOW *win1);
 extern position getHead();
 extern vector<position> vpoison_item;
 extern vector<position> vgrow_item;
@@ -136,11 +136,11 @@ void printMission(WINDOW* w, int level){
   wrefresh(w);
 }
 
-void setMission(Snake& snake){
+void setMission(Snake& snake, WINDOW *win1){
   if(vgrow_item.empty() ==0){
     position head = snake.getHead();
     if(head == vgrow_item.back()){
-      snake.crushItem();
+      snake.crushItem(win1);
       snake.changeSnakeLen();
       snake.growthItem++;
     }
@@ -148,7 +148,7 @@ void setMission(Snake& snake){
   if(vpoison_item.empty() ==0){
     position head = snake.getHead();
     if(head == vpoison_item.back()){
-      snake.minusSnake();
+      snake.minusSnake(win1);
       snake.changeSnakeLen();
       snake.poisonItem++;
     }
@@ -170,6 +170,10 @@ void nextLevel(Snake& snake){
     missionPoison = 'X';
     missionGate = 'X';
     snake.setLevel(snake.getLevel()+1);
+	missionB = 'X'; //미션 성공여부 표시해주는 캐릭터
+	missionGrowth = 'X';
+	missionPoison = 'X';
+	missionGate = 'X';
   }
 }
 
@@ -206,6 +210,8 @@ void game() { //game 실행
 	// refresh();
 	// wrefresh(win1);
 	int mapCnt = 0;
+	int growCnt = 0;
+	int poisonCnt = 0;
 	while(!snake.getEnd()) //exit가 true가 될때까지 반복문
 	{
 	WINDOW *win1 = newwin(40, 60, 0, 0); //row, col, startY, startX
@@ -222,7 +228,7 @@ void game() { //game 실행
 
 	wrefresh(win1);
 		drawGameMap(win1, snake, map_table, snake.getRow(), snake.getCol()); //draw함수 호출하여 맵 업데이트
-    setMission(snake);
+    setMission(snake,win1);
 		if (mapCnt == 0) {
 			(snake, map[snake.getLevel()-1]); //처음 맵 설정
 		}
@@ -231,11 +237,28 @@ void game() { //game 실행
 			snake.removeGate(map[snake.getLevel()-1]);
 			updateMap(snake, map[snake.getLevel()-1]);
 			mapCnt = 1;
-			disappeargrowth(snake.getLevel()-1);
-			disappearPoison(snake.getLevel()-1);
-			appeargrowth(snake.getLevel()-1);
-			appearposion(snake.getLevel()-1);
 		}
+		if (growCnt == 0) {
+			appeargrowth(snake.getLevel()-1,win1);
+		}
+		growCnt+= 1;
+		if (growCnt == 77) { 
+			disappeargrowth(snake.getLevel()-1,win1);
+			appeargrowth(snake.getLevel()-1,win1);
+			growCnt = 1;
+		}
+		if (poisonCnt == 0) {
+			appearposion(snake.getLevel()-1,win1);
+
+		}
+		poisonCnt+= 1;
+		if (poisonCnt == 67) { 
+			disappearPoison(snake.getLevel()-1,win1);
+			appearposion(snake.getLevel()-1,win1);
+			poisonCnt = 1;
+		}
+		
+		
 
 		int input = wgetch(win1); //키 입력받기
 		char d = snake.getDirection(); //snake의 방향 설정

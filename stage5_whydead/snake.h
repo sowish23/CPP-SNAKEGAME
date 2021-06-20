@@ -49,8 +49,8 @@ public:
 	//item
 	int getSize();
 	void setLevel(int new_level);
-	vector<Vector> minusSnake();
-	void crushItem();
+	void minusSnake(WINDOW *win1);
+	void crushItem(WINDOW *win1);
 	position getHead();
 	void resize(int new_size);
 	void changeSnakeLen();
