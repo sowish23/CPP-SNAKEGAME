@@ -9,6 +9,7 @@ extern void disappearPoison(int stage_num, WINDOW *win1);
 extern void disappeargrowth(int stage_num, WINDOW *win1);
 extern WINDOW *win1;
 
+//@author 정소원 (20181689)
 Snake::Snake(int r, int c) : row(r), col(c)
 	{
 		for(int i=0; i<3; i++)
@@ -22,8 +23,10 @@ Snake::Snake(int r, int c) : row(r), col(c)
 		setGateCnt(0);
 	}
 
+//@author 정소원 (20181689)
 Snake::~Snake(){ delete [] map_list; }
 
+//@author 정소원 (20181689)
 void Snake::setDirection(int d){
 	switch(d)
 	{
@@ -33,6 +36,7 @@ void Snake::setDirection(int d){
 		case 3 : direction = Vector(-1, 0); break;
 	}
 }
+//@author 정소원 (20181689)
 int Snake::gateDirection(Vector gate, int map[40][60]){
 	Vector A = gate + Vector(0,-1) ;
 	if(map[A.getY()][A.getX()]==0) return 0;
@@ -46,6 +50,7 @@ int Snake::gateDirection(Vector gate, int map[40][60]){
 	return -1;
 }
 
+//@author 정소원 (20181689)
 void Snake::moveSnakeHead(int map[40][60]){
 	snake_vec[0] += direction; //가는 방향으로 계속 증가하게
 	for(int i=0; i<wall.size(); i++) { //벽의 벡터만큼 for문
@@ -73,10 +78,12 @@ void Snake::moveSnakeHead(int map[40][60]){
 	}
 }
 
+//@author 정소원 (20181689)
 void Snake::moveSnakeBody(){ //head에 따라 body도 함께 변경하게
 	for(unsigned int i=snake_vec.size()-1; i>0; --i) snake_vec[i] = snake_vec[i - 1];
 }
 
+//@author 정소원 (20181689)
 char* Snake::setMaptoList(int map[40][60]){ //2차원배열을 리스트로 변경함
 	memset(map_list, ' ', row*col);
 	for(unsigned int i=0; i<40; i++) {
@@ -103,6 +110,7 @@ char* Snake::setMaptoList(int map[40][60]){ //2차원배열을 리스트로 변�
 	return map_list;
 }
 
+//@author 정소원 (20181689)
 char Snake::getDirection() { //방향 설정
 	if(direction.getX()==1) return 'r'; //오른쪽
 	else if(direction.getX()==-1) return 'l'; //왼쪽
@@ -110,14 +118,17 @@ char Snake::getDirection() { //방향 설정
 	else return 'd'; //아랫쪽
 }
 
+//@author 정소원 (20181689)
 void Snake::setEnd(bool e) {end = e;}
 bool Snake::getEnd() {return end;}
 int Snake::getSpeed() {return speed;}
 int Snake::getRow() {return row;}
 int Snake::getCol() {return col;}
+//@author 송경민 (20181630)
 int Snake::getLevel() {return level;}
 int Snake::getSnakeLen(){return snakeLen;}
 
+//@author 정소원 (20181689)
 void Snake::setGate(int map[40][60]) { //gate설정
 	int randWall = rand() % wall.size(); //랜덤함수 추출
 	int randWall2 = rand() % wall.size();
@@ -131,6 +142,7 @@ void Snake::setGate(int map[40][60]) { //gate설정
 	// wall.erase(wall.begin() + randWall2);
 }
 
+//@author 정소원 (20181689)
 void Snake::removeGate(int map[40][60])
 {
 	map[gate[0].getY()][gate[0].getX()] = 1; //전 gate의 map 다시 바꾸어줌
@@ -142,6 +154,8 @@ void Snake::removeGate(int map[40][60])
 }
 
 
+//@author 정소원 (20181689)
+//@author 송경민 (20181630)
 void Snake::setGateCnt(int i) {
 	if (i==0){
 		gateCnt = 0;
@@ -154,29 +168,36 @@ int Snake::getGateCnt() {return gateCnt;}
 
 //item
 
+//@author 송경민 (20181630)
 int Snake::getSize(){return snake_vec.size();}
+//@author 송경민 (20181630)
 void Snake::setLevel(int new_level){
 	level = new_level;
 }
 
+//@author 최지희 (20181701)
 void Snake::minusSnake(WINDOW *win1){
 	disappearPoison(level-1,win1);
 	snake_vec.pop_back();
 	appearposion(level-1,win1);
 }
 
+//@author 최지희 (20181701)
 void Snake::crushItem(WINDOW *win1){
 	disappeargrowth(level -1,win1);
 	snake_vec.push_back(snake_vec.back());
 	appeargrowth(level-1,win1);
 }
 
+//@author 최지희 (20181701)
 position Snake::getHead(){
 	position head(snake_vec[0].getX(),snake_vec[0].getY());
 	return head;
 }
 
+//@author 최지희 (20181701)
 void Snake::resize(int new_size){
 	snake_vec.resize(new_size);
 }
+//@author 최지희 (20181701)
 void Snake::changeSnakeLen(){snakeLen = snake_vec.size();}

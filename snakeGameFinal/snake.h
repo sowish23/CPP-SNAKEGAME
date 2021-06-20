@@ -6,6 +6,9 @@
 #include "position.h"
 using namespace std;
 
+//@author 정소원 (20181689)
+//@author 송경민 (20181630)
+//@author 최지희 (20181701)
 const int snakeMaxLen=6;
 
 class Snake

@@ -1,3 +1,4 @@
+//@author 최지희 (20181701)
 #include <ncurses.h>
 #include <stdlib.h>
 #include <ctime>

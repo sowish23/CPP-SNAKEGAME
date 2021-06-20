@@ -1,3 +1,4 @@
+//@author 최지희 (20181701)
 #include "position.h"
 using namespace std;
 

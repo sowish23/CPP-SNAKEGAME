@@ -1,3 +1,4 @@
+//@author 정소원 (20181689)
 #include <iostream>
 #include <vector>
 using namespace std;

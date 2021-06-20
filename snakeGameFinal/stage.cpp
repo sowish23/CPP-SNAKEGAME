@@ -33,6 +33,7 @@ int num_missionPoison = 2;
 int num_missionGate = 1;
 
 
+//@author 송경민 (20181630)
 void newWindow(float y, float x){ //새창 만들기
     clear();
     initscr();
@@ -40,6 +41,7 @@ void newWindow(float y, float x){ //새창 만들기
     getmaxyx(stdscr, y, x);
 }
 
+//@author 송경민 (20181630)
 int UserInput(){ //인풋받기
     int UserInput = getch();
     refresh();
@@ -48,12 +50,14 @@ int UserInput(){ //인풋받기
     return UserInput;
 }
 
+//@author 송경민 (20181630)
 int startGame(float y, float x) { //게임시작
     newWindow(y,x);
     printw("Do you want to start snake game? (y/n)");
     return UserInput();
 }
 
+//@author 송경민 (20181630)
 int finishWindow(float y, float x){ //게임재시작
     newWindow(y,x);
     printw(whyDead.data());
@@ -61,6 +65,7 @@ int finishWindow(float y, float x){ //게임재시작
     return UserInput();
 }
  
+//@author 정소원 (20181689)
 void drawGameMap(WINDOW* win, Snake& snake, char* table, int row, int col) //맵 그리기
 {
 	werase(win);
@@ -111,10 +116,12 @@ void drawGameMap(WINDOW* win, Snake& snake, char* table, int row, int col) //맵
 	wrefresh(win);
 }
 
+//@author 정소원 (20181689)
 void updateMap(Snake& snake, int map[40][60]) { //일정시간마다 맵 업데이트
 	snake.setGate(map); //gate를 임의로 설정
 }
 
+//@author 송경민 (20181630)
 void printScoreBoard(WINDOW* w, int snakeLen, int level, int growthItem, int poisonItem, int Gate){
 	werase(w);
 	wbkgd(w, COLOR_PAIR(level));
@@ -128,6 +135,7 @@ void printScoreBoard(WINDOW* w, int snakeLen, int level, int growthItem, int poi
 	wrefresh(w);
 }
 
+//@author 송경민 (20181630)
 void printMission(WINDOW* w, int level){
   werase(w);
   wbkgd(w, COLOR_PAIR(level));
@@ -140,6 +148,7 @@ void printMission(WINDOW* w, int level){
   wrefresh(w);
 }
 
+//@author 송경민 (20181630)
 int noticeChangeLevel(float y, float x, int level){ // 레벨 바뀔때 알려주는 창 띄우기
   clear();
   initscr();
@@ -159,6 +168,7 @@ int noticeChangeLevel(float y, float x, int level){ // 레벨 바뀔때 알려�
   return UserInput();
 }
 
+//@author 송경민 (20181630)
 void setMission(Snake& snake, WINDOW *win1){
   if(vgrow_item.empty() ==0){
     position head = snake.getHead();
@@ -182,6 +192,7 @@ void setMission(Snake& snake, WINDOW *win1){
   if(snake.getGateCnt() == num_missionGate) {missionGate = 'O';}
 }
 
+//@author 송경민 (20181630)
 void nextLevel(Snake& snake,WINDOW *win1){
   if((missionB == 'O')&&(missionGate=='O')&&(missionGrowth=='O')&&(missionPoison=='O')){
     snake.resize(3);
@@ -199,6 +210,8 @@ void nextLevel(Snake& snake,WINDOW *win1){
   }
 }
 
+//@author 정소원 (20181689) 50 % 
+//@author 송경민 (20181630) 50 %
 void game() { //game 실행
 
 	float x, y;
@@ -337,6 +350,7 @@ void game() { //game 실행
 	}
 }
 
+//@author 송경민 (20181630)
 int main(){
 	if (startGame(0, 0) == 'y') {
 			game();

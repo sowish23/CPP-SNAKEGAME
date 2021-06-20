@@ -1,6 +1,7 @@
 #include "vector.h"
 using namespace std;
 
+//@author 정소원 (20181689)
 Vector::Vector() : x(0), y(0){}
 Vector::Vector(int x, int y) {setX(x); setY(y);}
 
