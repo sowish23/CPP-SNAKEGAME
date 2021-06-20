@@ -92,10 +92,10 @@ void drawGameMap(WINDOW* win, Snake& snake, char* table, int row, int col) //맵
 					ch = '#';
 					break;
 				case '8': //gate1 임시표시
-					ch = '1';
+					ch = ' ';
 					break;
 				case '9': //gate2 임시표시
-					ch = '2';
+					ch = ' ';
 					break;
 				case '3':
                     ch = '0';
