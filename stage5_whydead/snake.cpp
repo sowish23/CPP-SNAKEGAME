@@ -65,6 +65,7 @@ void Snake::moveSnakeHead(int map[40][60]){
 			}
 			else {
 				setEnd(true); //gate가 아닌 벽을 만났을 경우는 exit을 true로 변경함
+				removeGate(map);
 				whyDead = "You can't go through the wall!"; //벽을 만나서 죽었다는 문구 출력 
 			}
 		}
