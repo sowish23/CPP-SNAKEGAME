@@ -25,7 +25,7 @@ char missionB = 'X'; //미션 성공여부 표시해주는 캐릭터
 char missionGrowth = 'X';
 char missionPoison = 'X';
 char missionGate = 'X';
-string whyDead = ""; //왜 죽었는지 알려주는 문자열  
+string whyDead = ""; //왜 죽었는지 알려주는 문자열
 
 int num_missionB = 6; // 미션 기준
 int num_missionGrowth = 2;
@@ -232,6 +232,11 @@ void game() { //game 실행
 	int growCnt = 0;
 	int poisonCnt = 0;
 
+  missionB = 'X'; //미션 성공여부 표시해주는 캐릭터
+  missionGrowth = 'X';
+  missionPoison = 'X';
+  missionGate = 'X';
+
 	while(!snake.getEnd()) //exit가 true가 될때까지 반복문
 	{
 	WINDOW *win1 = newwin(40, 60, 0, 0); //row, col, startY, startX
@@ -262,7 +267,7 @@ void game() { //game 실행
 			appeargrowth(snake.getLevel()-1,win1);
 		}
 		growCnt+= 1;
-		if (growCnt == 77) { 
+		if (growCnt == 77) {
 			disappeargrowth(snake.getLevel()-1,win1);
 			appeargrowth(snake.getLevel()-1,win1);
 			growCnt = 1;
@@ -272,7 +277,7 @@ void game() { //game 실행
 
 		}
 		poisonCnt+= 1;
-		if (poisonCnt == 67) { 
+		if (poisonCnt == 67) {
 			disappearPoison(snake.getLevel()-1,win1);
 			appearposion(snake.getLevel()-1,win1);
 			poisonCnt = 1;
