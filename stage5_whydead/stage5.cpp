@@ -25,7 +25,7 @@ char missionB = 'X'; //미션 성공여부 표시해주는 캐릭터
 char missionGrowth = 'X';
 char missionPoison = 'X';
 char missionGate = 'X';
-string whyDead = ""; //왜 죽었는지 알려주는 문자열
+string whyDead = ""; //왜 죽었는지 알려주는 문자열  
 
 int num_missionB = 6; // 미션 기준
 int num_missionGrowth = 2;
@@ -60,10 +60,11 @@ int finishWindow(float y, float x){ //게임재시작
     printw("\n \nYou Dead! Press any button to finish~");
     return UserInput();
 }
-
+ 
 void drawGameMap(WINDOW* win, Snake& snake, char* table, int row, int col) //맵 그리기
 {
 	werase(win);
+
 	for(int i=0; i<(row*col); i++)
 	{
 		if(table[i]!=' ')
@@ -92,10 +93,10 @@ void drawGameMap(WINDOW* win, Snake& snake, char* table, int row, int col) //맵
 					ch = '#';
 					break;
 				case '8': //gate1 임시표시
-					ch = 'G';
+					ch = '1';
 					break;
 				case '9': //gate2 임시표시
-					ch = 'G';
+					ch = '2';
 					break;
 				case '3':
                     ch = '0';
@@ -181,7 +182,7 @@ void setMission(Snake& snake, WINDOW *win1){
   if(snake.getGateCnt() == num_missionGate) {missionGate = 'O';}
 }
 
-void nextLevel(Snake& snake){
+void nextLevel(Snake& snake,WINDOW *win1){
   if((missionB == 'O')&&(missionGate=='O')&&(missionGrowth=='O')&&(missionPoison=='O')){
     snake.resize(3);
     snake.growthItem =0;
@@ -191,6 +192,8 @@ void nextLevel(Snake& snake){
     missionGrowth = 'X';
     missionPoison = 'X';
     missionGate = 'X';
+	disappeargrowth(snake.getLevel()-1,win1);
+	disappearPoison(snake.getLevel()-1,win1);
     snake.setLevel(snake.getLevel()+1);
     if (noticeChangeLevel(0,0, snake.getLevel()) == 13) {}; // 엔터 누르면 다음 레벨로 게임 계속 진행
   }
@@ -232,11 +235,6 @@ void game() { //game 실행
 	int growCnt = 0;
 	int poisonCnt = 0;
 
-  missionB = 'X'; //미션 성공여부 표시해주는 캐릭터
-  missionGrowth = 'X';
-  missionPoison = 'X';
-  missionGate = 'X';
-
 	while(!snake.getEnd()) //exit가 true가 될때까지 반복문
 	{
 	WINDOW *win1 = newwin(40, 60, 0, 0); //row, col, startY, startX
@@ -267,7 +265,7 @@ void game() { //game 실행
 			appeargrowth(snake.getLevel()-1,win1);
 		}
 		growCnt+= 1;
-		if (growCnt == 77) {
+		if (growCnt == 77) { 
 			disappeargrowth(snake.getLevel()-1,win1);
 			appeargrowth(snake.getLevel()-1,win1);
 			growCnt = 1;
@@ -277,7 +275,7 @@ void game() { //game 실행
 
 		}
 		poisonCnt+= 1;
-		if (poisonCnt == 67) {
+		if (poisonCnt == 67) { 
 			disappearPoison(snake.getLevel()-1,win1);
 			appearposion(snake.getLevel()-1,win1);
 			poisonCnt = 1;
@@ -334,7 +332,7 @@ void game() { //game 실행
 
 		snake.moveSnakeBody(); //body도 함께 바꾸어줌
 		snake.moveSnakeHead(map[snake.getLevel()-1]); //head의 방향 변경
-    nextLevel(snake); // 레벨 올리기
+    nextLevel(snake, win1); // 레벨 올리기
 		usleep(snake.getSpeed()); //speed 설정한 만큼 화면 유지 (=스피드)
 	}
 }
