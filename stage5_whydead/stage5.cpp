@@ -318,6 +318,8 @@ void game() { //game 실행
 			case 'R' :
 				snake.setEnd(true);
 				snake.removeGate(map[snake.getLevel()]);
+				disappeargrowth(snake.getLevel()-1,win1);
+				disappearPoison(snake.getLevel()-1,win1);
 				game();
 		}
 		if(snake.getSize() <3) {
