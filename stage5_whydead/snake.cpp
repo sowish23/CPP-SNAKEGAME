@@ -19,6 +19,7 @@ Snake::Snake(int r, int c) : row(r), col(c)
 		map_list = new char[row*col];
 		level=1;
 		snakeLen=3;
+		setGateCnt(0);
 	}
 
 Snake::~Snake(){ delete [] map_list; }
@@ -66,7 +67,7 @@ void Snake::moveSnakeHead(int map[40][60]){
 			else {
 				setEnd(true); //gate가 아닌 벽을 만났을 경우는 exit을 true로 변경함
 				removeGate(map);
-				whyDead = "You can't go through the wall!"; //벽을 만나서 죽었다는 문구 출력 
+				whyDead = "You can't go through the wall!"; //벽을 만나서 죽었다는 문구 출력
 			}
 		}
 	}
