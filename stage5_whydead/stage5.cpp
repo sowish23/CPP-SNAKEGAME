@@ -54,10 +54,10 @@ int startGame(float y, float x) { //게임시작
     return UserInput();
 }
 
-int playAgain(float y, float x){ //게임재시작
+int finishWindow(float y, float x){ //게임재시작
     newWindow(y,x);
     printw(whyDead.data());
-    printw("\n \nDo you want to play again? (y/n)");
+    printw("\n \nYou Dead! Press any button to finish~");
     return UserInput();
 }
 
@@ -341,10 +341,9 @@ void game() { //game 실행
 
 int main(){
 	if (startGame(0, 0) == 'y') {
-		do {
 			game();
-		} while(playAgain(0, 0) == 'y');
-	}
+		}
+  finishWindow(0, 0);
 	endwin();
 	return 0;
 }
