@@ -30,9 +30,9 @@ void updateposion(int stage_num){
 }
 
 
-void appearposion(int stage_num){ 
+void appearposion(int stage_num, WINDOW *win1){ 
+    nodelay(win1, true);
     while(1){
-        // nodelay(win1, TRUE);
         if(map[stage_num][poison_position.randomPosition().y][poison_position.randomPosition().x] != 0){
             poison_position.randomPosition();
         }
@@ -42,9 +42,9 @@ void appearposion(int stage_num){
     updateposion(stage_num);
 }
 
-void appeargrowth(int stage_num){ 
+void appeargrowth(int stage_num, WINDOW *win1){
+    nodelay(win1, true);    
     while(1){
-        // nodelay(win1, TRUE);
         if(map[stage_num][growth_position.randomPosition().y][growth_position.randomPosition().x] != 0){
             growth_position.randomPosition();
         }
@@ -54,7 +54,8 @@ void appeargrowth(int stage_num){
     updategrowth(stage_num);
 }
 
-void disappearPoison(int stage_num){
+void disappearPoison(int stage_num, WINDOW *win1){
+    nodelay(win1, true);
     if(vpoison_item.empty() == 0 ){
         poison_position = vpoison_item.back();
         map[stage_num][poison_position.y][poison_position.x] = 0;
@@ -62,7 +63,8 @@ void disappearPoison(int stage_num){
     }
 }
 
-void disappeargrowth(int stage_num){
+void disappeargrowth(int stage_num, WINDOW *win1){
+    nodelay(win1, true);
     if(vgrow_item.empty() == 0 ){
         growth_position = vgrow_item.back();
         map[stage_num][growth_position.y][growth_position.x] = 0;
